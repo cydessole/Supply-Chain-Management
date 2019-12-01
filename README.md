@@ -65,7 +65,7 @@ optional arguments:
 python MPS.py 500 1.5 150 50 150 200 50 250 50 200 50 100 50 300
 ```
 ##### Result
-```shell
+```
 Master Production Schedule :
 1: One time Run
 2: Chase
