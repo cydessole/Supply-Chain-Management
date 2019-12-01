@@ -62,7 +62,7 @@ optional arguments:
 #### Example #1
 ##### Input
 ```shell
-python MPS.py 500 1.5 150 50 150 200 50 250 50 200 50 100 50 300
+$ python MPS.py 500 1.5 150 50 150 200 50 250 50 200 50 100 50 300
 ```
 ##### Result
 ```
@@ -89,7 +89,7 @@ total_cost: 5100.0
 #### Example #2
 ##### Input
 ```shell
-python MPS.py 500 1.5 150 50 150 200 50 250 50 200 50 100 50 300 -v -e
+$ python MPS.py 500 1.5 150 50 150 200 50 250 50 200 50 100 50 300 -v -e
 ```
 
 ##### Result
