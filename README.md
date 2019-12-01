@@ -244,4 +244,5 @@ The total cost:  3700.0
 
 ## Notes
 Other algorithms will be added to this repository for SCM.
+
 For example, Dijkstra, Clarke-Wright for Supply Chain Design.
