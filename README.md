@@ -93,7 +93,7 @@ python MPS.py 500 1.5 150 50 150 200 50 250 50 200 50 100 50 300 -v -e
 ```
 
 ##### Result
-```shell
+```
 Master Production Schedule :
 1: One time Run
 2: Chase
