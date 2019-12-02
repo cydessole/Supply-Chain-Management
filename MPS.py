@@ -487,13 +487,13 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
         print('Excel saved')
     return inventory,production,total_cost
 
-def wagnerWithin(setup_cost,holding_cost,demands,verbose=False,excel=False):
+def wagnerWhitin(setup_cost,holding_cost,demands,verbose=False,excel=False):
     '''
     Signature:
-    WagnerWithin(setup_cost,holding_cost,demands)
+    wagnerWhitin(setup_cost,holding_cost,demands)
 
     Docstring:
-    Wagner-Within optimization to find the lowest cost to produce based on fixed and variable cost
+    Wagner-Whitin optimization to find the lowest cost to produce based on fixed and variable cost
 
     Parameters
     ----------
@@ -627,7 +627,7 @@ def wagnerWithin(setup_cost,holding_cost,demands,verbose=False,excel=False):
         print(strategy)
         print()
     if excel:
-        strategy.to_excel("output_WagnerWithin.xlsx")
+        strategy.to_excel("output_WagnerWhitin.xlsx")
         print('Excel saved')
 
     return inventory,production,total_cost
@@ -670,7 +670,7 @@ def main(argv):
     print('3: Fixed Order Quantity')
     print('4: Periodic Order Quantity')
     print('5: Silver-Meal')
-    print('6: Wagner-Within')
+    print('6: Wagner-Whitin')
 
 
     i=0
@@ -704,7 +704,7 @@ def main(argv):
     elif i==5:
         silvermeal(f_cost,h_cost,demands,verbose,excel)
     elif i==6:
-        wagnerWithin(f_cost,h_cost,demands,verbose,excel)
+        wagnerWhitin(f_cost,h_cost,demands,verbose,excel)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

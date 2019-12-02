@@ -21,7 +21,7 @@ MPS.py is a compilation of algorithms for Master Production Schedule:
 3. Fixed Order Quantity
 4. Periodic Order Quantity
 5. Silver-Meal Heuristic
-6. Wagner-Within Optimization
+6. Wagner-Whitin Optimization
 
 ## Local Installation
 
@@ -72,7 +72,7 @@ Master Production Schedule :
 3: Fixed Order Quantity
 4: Periodic Order Quantity
 5: Silver-Meal
-6: Wagner-Within
+6: Wagner-Whitin
 Choose the method number you want to run : 3
 Quantity to order: 300
 ========================Input========================
@@ -100,7 +100,7 @@ Master Production Schedule :
 3: Fixed Order Quantity
 4: Periodic Order Quantity
 5: Silver-Meal
-6: Wagner-Within
+6: Wagner-Whitin
 Choose the method number you want to run : 5
 ========================Input========================
 setup cost: 500.0
@@ -201,7 +201,7 @@ setup_cost=500.0
 holding_cost= 1.5
 demands= [150, 50, 150, 200, 50, 250, 50, 200, 50, 100, 50, 300]
 
-inventory,production,total_cost=wagnerWithin(setup_cost,holding_cost,demands,verbose=False,excel=False)
+inventory,production,total_cost=wagnerWhitin(setup_cost,holding_cost,demands,verbose=False,excel=False)
 
 print()
 strategy=pd.DataFrame(data={'period':range(1,len(demands)+1),
