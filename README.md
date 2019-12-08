@@ -83,9 +83,9 @@ demands: [150, 50, 150, 200, 50, 250, 50, 200, 50, 100, 50, 300]
 Start inventory: 0
 Quantity: 300.0
 ========================Final Cost========================
-total_holding_cost: 2100.0
+total_holding_cost: 1800.0
 total_setup: 3000.0
-total_cost: 5100.0
+total_cost: 4800.0
 ```
 
 #### Example #2
