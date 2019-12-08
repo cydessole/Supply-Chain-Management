@@ -47,7 +47,8 @@ def onetimerun(setup_cost,holding_cost,demands,verbose=False,excel=False):
             temp_inv=temp_inv-demands[period]
             print(temp_inv)
             period+=1
-
+            if period>=len(demands):
+                break
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
@@ -151,7 +152,8 @@ def chase(setup_cost,holding_cost,demands,verbose=False,excel=False):
             temp_inv=temp_inv-demands[period]
             print(temp_inv)
             period+=1
-
+            if period>=len(demands):
+                break
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
@@ -249,6 +251,8 @@ def fixedOrderQuantity(setup_cost,holding_cost,demands,Q,verbose=False,excel=Fal
             inventory.append(temp_inv-demands[period])
             temp_inv=temp_inv-demands[period]
             period+=1
+            if period>=len(demands):
+                break
 
     #Input Data
     print('========================Input========================')
@@ -282,7 +286,10 @@ def fixedOrderQuantity(setup_cost,holding_cost,demands,Q,verbose=False,excel=Fal
         if (inventory[period-1]-demands[period])>=0:
             produce_now=0
         else:
-            produce_now=Q
+            if sum(demands[period:len(demands)])-inventory[period-1]>=Q:
+                produce_now=Q
+            else:
+                produce_now=sum(demands[period:len(demands)])-inventory[period-1]
         production.append(produce_now)
         inventory.append(production[period]-demands[period]+inventory[period-1])
 
@@ -372,7 +379,8 @@ def periodicOrderQuantity(setup_cost,holding_cost,demands,T,verbose=False,excel=
             inventory.append(temp_inv-demands[period])
             temp_inv=temp_inv-demands[period]
             period+=1
-
+            if period>=len(demands):
+                break
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
@@ -489,7 +497,8 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
             inventory.append(temp_inv-demands[period])
             temp_inv=temp_inv-demands[period]
             period+=1
-
+            if period>=len(demands):
+                break
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
