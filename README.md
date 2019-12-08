@@ -75,10 +75,12 @@ Master Production Schedule :
 6: Wagner-Whitin
 Choose the method number you want to run : 3
 Quantity to order: 300
+Start inventory: 0
 ========================Input========================
 setup cost: 500.0
 holding cost: 1.5
 demands: [150, 50, 150, 200, 50, 250, 50, 200, 50, 100, 50, 300]
+Start inventory: 0
 Quantity: 300.0
 ========================Final Cost========================
 total_holding_cost: 2100.0
@@ -102,9 +104,11 @@ Master Production Schedule :
 5: Silver-Meal
 6: Wagner-Whitin
 Choose the method number you want to run : 5
+Start inventory: 0
 ========================Input========================
 setup cost: 500.0
 holding cost: 1.5
+Start inventory: 0
 demands: [150, 50, 150, 200, 50, 250, 50, 200, 50, 100, 50, 300]
 ========================Step 1========================
 period 1

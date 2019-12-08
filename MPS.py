@@ -29,20 +29,48 @@ def onetimerun(setup_cost,holding_cost,demands,verbose=False,excel=False):
     inventory=[]
     production=[]
 
+    Ibegin=-1
+    #Initialization of the start inventory
+    while Ibegin<0 :
+        try:
+            Ibegin=int(input('Start Inventory : '))
+            if Ibegin<0:
+                print("Inventory must be positive ")
+        except ValueError:
+            print("This isn't a integer")
+
+    if Ibegin>0:
+        temp_inv=Ibegin
+        while demands[period]<=temp_inv:
+            production.append(0)
+            inventory.append(temp_inv-demands[period])
+            temp_inv=temp_inv-demands[period]
+            print(temp_inv)
+            period+=1
+
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
     print('holding cost:',holding_cost)
+    print('Start Inventory:',Ibegin)
     print('demands:',demands)
 
     #Find the total production for all period
-    total_prod=sum(demands)
-    #Produce everything at the first period
-    production.append(total_prod)
-    #Compute the first inventory
-    inventory.append(total_prod-demands[period])
-    for i,t in enumerate(range(period+1,period+len(demands)),1):
-        inventory.append(inventory[i-1]-demands[t])
+    if len(inventory)==0:
+        total_prod=sum(demands)
+        #Produce everything at the first period
+        production.append(total_prod)
+        #Compute the first inventory
+        inventory.append(total_prod-demands[period])
+    else:
+        total_prod=sum(demands)-inventory[period-1]
+        #Produce everything at the t period
+        production.append(total_prod)
+        #Compute the first inventory
+        inventory.append(total_prod-demands[period]+inventory[period-1])
+
+    for i in range(period+1,len(demands)):
+        inventory.append(inventory[i-1]-demands[i])
         production.append(0)
 
     if verbose:
@@ -105,16 +133,43 @@ def chase(setup_cost,holding_cost,demands,verbose=False,excel=False):
     inventory=[]
     production=[]
 
+    Ibegin=-1
+    #Initialization of the start inventory
+    while Ibegin<0 :
+        try:
+            Ibegin=int(input('Start Inventory : '))
+            if Ibegin<0:
+                print("Inventory must be positive ")
+        except ValueError:
+            print("This isn't a integer")
+
+    if Ibegin>0:
+        temp_inv=Ibegin
+        while demands[period]<=temp_inv:
+            production.append(0)
+            inventory.append(temp_inv-demands[period])
+            temp_inv=temp_inv-demands[period]
+            print(temp_inv)
+            period+=1
+
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
     print('holding cost:',holding_cost)
+    print('Start Inventory:',Ibegin)
     print('demands:',demands)
 
-    #Produce everything at the first period
-    production=demands.copy()
-    #Compute the first inventory
-    inventory.extend([0]*len(demands))
+    print(inventory)
+    if len(inventory)>0:
+        for i in range(period,len(demands)):
+            print(inventory[i-1])
+            production.append(demands[i]-inventory[i-1])
+            inventory.append(inventory[i-1]-demands[i]+production[i])
+    else:
+        #Produce every time when needed
+        production=demands.copy()
+        #Compute the first inventory
+        inventory.extend([0]*len(demands))
 
     if verbose:
             print('========================Schedule========================')
@@ -177,12 +232,30 @@ def fixedOrderQuantity(setup_cost,holding_cost,demands,Q,verbose=False,excel=Fal
     step=0
     inventory=[]
     production=[]
+    Ibegin=-1
+    #Initialization of the start inventory
+    while Ibegin<0 :
+        try:
+            Ibegin=int(input('Start Inventory : '))
+            if Ibegin<0:
+                print("Inventory must be positive ")
+        except ValueError:
+            print("This isn't a integer")
+
+    if Ibegin>0:
+        temp_inv=Ibegin
+        while demands[period]<=temp_inv:
+            production.append(0)
+            inventory.append(temp_inv-demands[period])
+            temp_inv=temp_inv-demands[period]
+            period+=1
 
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
     print('holding cost:',holding_cost)
     print('demands:',demands)
+    print('Start Inventory:',Ibegin)
     print('Quantity:',Q)
 
     step+=1
@@ -191,14 +264,16 @@ def fixedOrderQuantity(setup_cost,holding_cost,demands,Q,verbose=False,excel=Fal
         print('period',period+1)
 
     #First step Initialization for production and inventory
-    production.append(Q)
-    inventory.append(production[period]-demands[period])
+    if len(inventory)==0:
+        production.append(Q)
+        inventory.append(production[period]-demands[period])
 
-    if verbose:
-            print('production',production)
-            print('inventory',inventory)
+        if verbose:
+                print('production',production)
+                print('inventory',inventory)
 
-    period+=1
+        period+=1
+
     while  period<len(demands) :
         step+=1
         if verbose:
@@ -280,11 +355,30 @@ def periodicOrderQuantity(setup_cost,holding_cost,demands,T,verbose=False,excel=
     inventory=[]
     production=[]
 
+    Ibegin=-1
+    #Initialization of the start inventory
+    while Ibegin<0 :
+        try:
+            Ibegin=int(input('Start Inventory : '))
+            if Ibegin<0:
+                print("Inventory must be positive ")
+        except ValueError:
+            print("This isn't a integer")
+
+    if Ibegin>0:
+        temp_inv=Ibegin
+        while demands[period]<=temp_inv:
+            production.append(0)
+            inventory.append(temp_inv-demands[period])
+            temp_inv=temp_inv-demands[period]
+            period+=1
+
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
     print('holding cost:',holding_cost)
     print('demands:',demands)
+    print('Start Inventory:',Ibegin)
     print('Period:',T)
 
 
@@ -299,9 +393,15 @@ def periodicOrderQuantity(setup_cost,holding_cost,demands,T,verbose=False,excel=
         else:
             n=close_to_end
         n=int(n)
-        total_prod=sum(demands[period:period+n])
-        production.append(total_prod)
-        inventory.append(total_prod-demands[period])
+        if len(inventory)==0:
+            total_prod=sum(demands[period:period+n])
+            production.append(total_prod)
+            inventory.append(total_prod-demands[period])
+        else:
+            total_prod=sum(demands[period:period+n])-inventory[period-1]
+            production.append(total_prod)
+            inventory.append(total_prod-demands[period]+inventory[period-1])
+
         for i in range(period+1,period+n):
             inventory.append(inventory[i-1]-demands[i])
             production.append(0)
@@ -372,11 +472,29 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
     step=0
     inventory=[]
     production=[]
+    Ibegin=-1
+    #Initialization of the start inventory
+    while Ibegin<0 :
+        try:
+            Ibegin=int(input('Start Inventory : '))
+            if Ibegin<0:
+                print("Inventory must be positive ")
+        except ValueError:
+            print("This isn't a integer")
+
+    if Ibegin>0:
+        temp_inv=Ibegin
+        while demands[period]<=temp_inv:
+            production.append(0)
+            inventory.append(temp_inv-demands[period])
+            temp_inv=temp_inv-demands[period]
+            period+=1
 
     #Input Data
     print('========================Input========================')
     print('setup cost:',setup_cost)
     print('holding cost:',holding_cost)
+    print('Start Inventory:',Ibegin)
     print('demands:',demands)
 
 
@@ -392,9 +510,14 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
         if verbose:
             print('Number of period to produce :',n+1)
         #Sum of Demand to produce
-        total_prod=sum(demands[period:(period+n+1)])
-        #Initialization of the stock of the first period of production
-        temp_inv_n=[total_prod-demands[period]]
+        if len(inventory)==0:
+            total_prod=sum(demands[period:(period+n+1)])
+            #Initialization of the stock of the first period of production
+            temp_inv_n=[total_prod-demands[period]]
+        else:
+            total_prod=sum(demands[period:(period+n+1)])-inventory[period-1]
+            #Initialization of the stock of the first period of production
+            temp_inv_n=[total_prod-demands[period]+inventory[period-1]]
 
         #Loop to find the inventory for all the period handled by the production at period t : inventory(t-1)-demand(t)
         for i,t in enumerate(range(period+1,period+1+n),1):
@@ -413,10 +536,14 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
 
             #n periods become n-1 and initialization of n period
             temp_inv_n_minus_1=temp_inv_n.copy()
-            total_prod=sum(demands[period:(period+n+1)])
-            temp_inv_n=[total_prod-demands[period]]
+            if len(inventory)==0:
+                total_prod=sum(demands[period:(period+n+1)])
+                temp_inv_n=[total_prod-demands[period]]
+            else:
+                total_prod=sum(demands[period:(period+n+1)])-inventory[period-1]
+                temp_inv_n=[total_prod-demands[period]+inventory[period-1]]
 
-            #Loop to find the inventory for all period handled
+            #Loop to find the inventory for all period handled t period inventory i (0 start of period t specific to silver-meal because inventory begins for period t)
             for i,t in enumerate(range(period+1,period+1+n),1):
                 temp_inv_n.append(temp_inv_n[i-1]-demands[t])
 
@@ -432,7 +559,10 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
             n-=1 #Best result
 
         #Retrieves the best schedule of production
-        production.append(sum(demands[period:(period+n+1)]))
+        if len(inventory)==0:
+            production.append(sum(demands[period:(period+n+1)]))
+        else:
+            production.append(sum(demands[period:(period+n+1)])-inventory[period-1])
         production.extend([0]*n) #Number of periods when we don't produce
 
         #Retrieves the best choice of inventory
