@@ -428,7 +428,7 @@ def periodicOrderQuantity(setup_cost,holding_cost,demands,T,verbose=False,excel=
             else:
                 total_prod=sum(demands[period:period+n])-Ibegin
                 production.append(total_prod)
-                inventory.append(total_prod-demands[period]+Ibegin)                
+                inventory.append(total_prod-demands[period]+Ibegin)
         else:
             total_prod=sum(demands[period:period+n])-inventory[period-1]
             production.append(total_prod)
