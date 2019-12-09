@@ -58,11 +58,18 @@ def onetimerun(setup_cost,holding_cost,demands,verbose=False,excel=False):
 
     #Find the total production for all period
     if len(inventory)==0:
-        total_prod=sum(demands)
-        #Produce everything at the first period
-        production.append(total_prod)
-        #Compute the first inventory
-        inventory.append(total_prod-demands[period])
+        if Ibegin==0:
+            total_prod=sum(demands)
+            #Produce everything at the first period
+            production.append(total_prod)
+            #Compute the first inventory
+            inventory.append(total_prod-demands[period])
+        else:
+            total_prod=sum(demands)-Ibegin
+            #Produce everything at the t period
+            production.append(total_prod)
+            #Compute the first inventory
+            inventory.append(total_prod-demands[period]+Ibegin)
     else:
         total_prod=sum(demands)-inventory[period-1]
         #Produce everything at the t period
@@ -164,14 +171,22 @@ def chase(setup_cost,holding_cost,demands,verbose=False,excel=False):
     print(inventory)
     if len(inventory)>0:
         for i in range(period,len(demands)):
-            print(inventory[i-1])
+            #print(inventory[i-1])
             production.append(demands[i]-inventory[i-1])
             inventory.append(inventory[i-1]-demands[i]+production[i])
     else:
-        #Produce every time when needed
-        production=demands.copy()
-        #Compute the first inventory
-        inventory.extend([0]*len(demands))
+        if Ibegin==0:
+            #Produce every time when needed
+            production=demands.copy()
+            #Compute the first inventory
+            inventory.extend([0]*len(demands))
+        else:
+            production.append(demands[period]-Ibegin)
+            inventory.append(Ibegin-demands[period]+production[period])
+            for i in range(period+1,len(demands)):
+                #print(inventory[i-1])
+                production.append(demands[i]-inventory[i-1])
+                inventory.append(inventory[i-1]-demands[i]+production[i])
 
     if verbose:
             print('========================Schedule========================')
@@ -269,8 +284,12 @@ def fixedOrderQuantity(setup_cost,holding_cost,demands,Q,verbose=False,excel=Fal
 
     #First step Initialization for production and inventory
     if len(inventory)==0:
-        production.append(Q)
-        inventory.append(production[period]-demands[period])
+        if Ibegin==0:
+            production.append(Q)
+            inventory.append(production[period]-demands[period])
+        else:
+            production.append(Q)
+            inventory.append(production[period]-demands[period]+Ibegin)
 
         if verbose:
                 print('production',production)
@@ -402,9 +421,14 @@ def periodicOrderQuantity(setup_cost,holding_cost,demands,T,verbose=False,excel=
             n=close_to_end
         n=int(n)
         if len(inventory)==0:
-            total_prod=sum(demands[period:period+n])
-            production.append(total_prod)
-            inventory.append(total_prod-demands[period])
+            if Ibegin==0:
+                total_prod=sum(demands[period:period+n])
+                production.append(total_prod)
+                inventory.append(total_prod-demands[period])
+            else:
+                total_prod=sum(demands[period:period+n])-Ibegin
+                production.append(total_prod)
+                inventory.append(total_prod-demands[period]+Ibegin)                
         else:
             total_prod=sum(demands[period:period+n])-inventory[period-1]
             production.append(total_prod)
@@ -520,9 +544,14 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
             print('Number of period to produce :',n+1)
         #Sum of Demand to produce
         if len(inventory)==0:
-            total_prod=sum(demands[period:(period+n+1)])
-            #Initialization of the stock of the first period of production
-            temp_inv_n=[total_prod-demands[period]]
+            if Ibegin==0:
+                total_prod=sum(demands[period:(period+n+1)])
+                #Initialization of the stock of the first period of production
+                temp_inv_n=[total_prod-demands[period]]
+            else:
+                total_prod=sum(demands[period:(period+n+1)])-Ibegin
+                #Initialization of the stock of the first period of production
+                temp_inv_n=[total_prod-demands[period]+Ibegin]
         else:
             total_prod=sum(demands[period:(period+n+1)])-inventory[period-1]
             #Initialization of the stock of the first period of production
@@ -569,7 +598,10 @@ def silvermeal(setup_cost,holding_cost,demands,verbose=False,excel=False):
 
         #Retrieves the best schedule of production
         if len(inventory)==0:
-            production.append(sum(demands[period:(period+n+1)]))
+            if Ibegin==0:
+                production.append(sum(demands[period:(period+n+1)]))
+            else:
+                production.append(sum(demands[period:(period+n+1)])-Ibegin)
         else:
             production.append(sum(demands[period:(period+n+1)])-inventory[period-1])
         production.extend([0]*n) #Number of periods when we don't produce
